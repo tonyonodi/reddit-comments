@@ -3,7 +3,7 @@
 
   "name": "Back to the Comments - reddit",
   "description": "Adds a page action to reddit posts that pops comments in when clicked.",
-  "version": "0.0.1",
+  "version": "0.0.2",
 
   "permissions": [
     "tabs",
