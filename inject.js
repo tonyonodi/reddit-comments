@@ -43,7 +43,8 @@ BTTC_ACTIVE_GLOBAL = true;
 			
 			// if statement required as "external" messages are often passed
 			if ( commentPath ) { 
-				frameURL = commentPath;
+				// won't load in https pages if it's not https
+				frameURL = commentPath.replace(/^http:/, "https:");
 				toggleComments( frameURL );
 			}
 		}
