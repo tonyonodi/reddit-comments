@@ -5,7 +5,6 @@
 	var linkList,
 		linkArray;
 
-
 	/**
 	* Functions
 	*/
@@ -58,7 +57,7 @@
 	* Events
 	*/
 	// grab all links including "more" link and convert to array of objects
-	linkList = document.querySelectorAll( "td.title a" );
+	linkList = document.querySelectorAll( ".thing .title a.title" );
 	linkArray = nodelistToArray( linkList );
 
 	// loop over all post links, get their comments and

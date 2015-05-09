@@ -115,7 +115,7 @@ var stripHeaders = function( info ) {
             ssIndex = cspValue.search( ssRegExp ) + 10;
             
             // splice in HN url to permit its use in frames
-            headers[i].value = cspValue.splice( ssIndex, "news.ycombinator.com " );
+            headers[i].value = cspValue.splice( ssIndex, "www.reddit.com " );
             
         }
     }
