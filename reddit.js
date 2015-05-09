@@ -3,38 +3,15 @@
 	* Variables
 	*/
 	var linkList,
-		linkArray;
+		linkArray,
+		commentLinkArray;
 
 	/**
 	* Functions
 	*/
 
-	// gets comment link for single post link.
-	function getCommentURL( linkToPost ) {
-		var postCell,
-			postRow,
-			commentRow,
-			commentLink,
-			commentURL;
-
-		postCell = linkToPost.parentNode;  // get table cell of link
-		postRow = postCell.parentNode;	// get table row of link
-		commentRow = postRow.nextElementSibling;  // go to next row (containing comment)
-		
-		// check if next row was found
-		if( commentRow ) {
-			commentLink = commentRow.querySelector("a:last-child");  // get the last link in that row
-
-			// comments don't exist for "x is hiring" listings
-			if ( commentLink ) 
-				commentURL = commentLink.getAttribute("href");	// get the href attribute of comment link
-
-			return commentURL;
-		}
-	}
-
 	// convert nodeList to array
-	function nodelistToArray( nodelist ) {
+	var nodelistToArray = function( nodelist ) {
 		var array = [];
 
 		for (var i = 0; i < nodelist.length; i++ ) {
@@ -48,8 +25,23 @@
 	}
 
 	// send comment url
-	function messenger( message ) {
+	var messenger = function( message ) {
 		chrome.runtime.sendMessage( message );
+	}
+
+	// gets comment link for single post link.
+	var addCommentListener = function ( linkToPost ) {
+		var postRow,
+			commentRow,
+			commentLink,
+			commentURL;
+
+
+		postRow = linkToPost.parentNode.parentNode;
+		commentLink = postRow.querySelector(".flat-list.buttons li.first a");  // go to next row (containing comment)
+		commentURL = commentLink.getAttribute("href");	// get the href attribute of comment link
+
+		linkToPost.addEventListener( "click", messenger.bind( null, commentURL ), false);
 	}
 
 
@@ -62,17 +54,5 @@
 
 	// loop over all post links, get their comments and
 	// add event listener.
-	for (var i = 0; i < linkArray.length; i++) {  // use < to omit "more"
-		var link,
-			comment;
-
-		link 	= linkArray[i];
-		comment = getCommentURL( link );
-
-		if ( comment ) { 
-
-			link.addEventListener( "click", messenger.bind( null, comment ), false);
-
-		}
-	};
+	linkArray.forEach( addCommentListener );
 })(window, document);
