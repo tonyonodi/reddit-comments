@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
 
-  "name": "Back to the Comments",
-  "description": "Adds a page action to hacker news posts that pops comments in when clicked.",
-  "version": "0.3.2",
+  "name": "Back to the Comments - reddit",
+  "description": "Adds a page action to reddit posts that pops comments in when clicked.",
+  "version": "0.0.1",
 
   "permissions": [
     "tabs",
@@ -11,7 +11,7 @@
     "storage",
     "webRequest",
     "webRequestBlocking",
-    "*://news.ycombinator.com/item?id=*"
+    "*://www.reddit.com/r/*/comments/*"
   ],
   "page_action": {
     "default_icon": {
@@ -25,16 +25,9 @@
   "content_scripts": [
     {
     "matches": [
-      "https://news.ycombinator.com/*"
+      "*://www.reddit.com/*"
       ],
-    "js": ["hackernews.js"],
-    "run_at": "document_end"
-    },
-    {
-    "matches": [
-      "*://hn.algolia.com/*"
-      ],
-    "js": ["algolia.js"],
+    "js": ["reddit.js"],
     "run_at": "document_end"
     }
   ],
