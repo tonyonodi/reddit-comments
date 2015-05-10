@@ -90,7 +90,17 @@ var stripHeaders = function( info ) {
         ssRegExp = /frame-src /,
         header,
         isCspHeader,
-        cspValue;
+        cspValue,
+        cspHeaders;
+
+        cspHeaders = [
+            'X-WebKit-CSP',
+            'X-Content-Security-Policy',
+            'Content-Security-Policy',
+            'x-webKit-CSP',
+            'x-content-security-policy',
+            'content-security-policy'
+        ];
 
     for (var i=headers.length-1; i>=0; --i) {
         header = headers[i].name.toLowerCase();
@@ -100,12 +110,7 @@ var stripHeaders = function( info ) {
             headers.splice(i, 1); // Remove header
         }
         
-        isCspHeader = header == 'X-WebKit-CSP' || 
-            header == 'X-Content-Security-Policy' || 
-            header == 'Content-Security-Policy' ||
-            header == 'x-webKit-CSP' || 
-            header == 'x-content-security-policy' || 
-            header == 'content-security-policy';
+        isCspHeader = cspHeaders.indexOf(header) >= 0;
 
         // add HN to list of sites allowed to be added in iframe
         if ( isCspHeader ) {
@@ -114,7 +119,7 @@ var stripHeaders = function( info ) {
             // find start of "script-src " arguments
             ssIndex = cspValue.search( ssRegExp ) + 10;
             
-            // splice in HN url to permit its use in frames
+            // splice in comment site url to permit its use in frames
             headers[i].value = cspValue.splice( ssIndex, "www.reddit.com " );
             
         }
@@ -155,7 +160,7 @@ chrome.tabs.onUpdated.addListener( tabUpdateListener );
 
 /**
 * Strip headers
-* allows HN comment pages to be loaded in a frame
+* allows comment pages to be loaded in a frame
 */
 requestFilter = {
     urls: [ '*://*/*' ] // Pattern to match all http(s) pages
